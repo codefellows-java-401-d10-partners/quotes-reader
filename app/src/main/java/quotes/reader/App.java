@@ -3,12 +3,70 @@
  */
 package quotes.reader;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import java.io.FileNotFoundException;
+import java.util.NoSuchElementException;
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+public class App {
+    public static void main(String[] args) throws FileNotFoundException {
+        //Make a new instance of  the QuoteReader class
+        QuotesReader qr;
+        //Insert the path into
+        try {
+            qr = new QuotesReader("src/main/resources/recentquotes.json");
+        } catch (FileNotFoundException e) {
+            System.out.printf("Quotes input file not found.");
+            return;
+        }
+
+        //check if args are 0, if it is, will just run code to get a random quote
+        if (args.length == 0) {
+            System.out.println(qr.getQuotation().prettyPrint());
+            return;
+        }
+
+        if (args[0].equals("author")) {
+            try {
+                System.out.println(
+                        qr.getQuotation(args[1], null, null).prettyPrint()
+                );
+            } catch (NoSuchElementException e) {
+                System.out.printf("No quotes found by author %s\n", args[0]);
+            }
+            return;
+        }
+
+        if (args[0].equals("contains")) {
+            try{
+                System.out.println(
+                        qr.getQuotation(null, null, args[1]).prettyPrint()
+                );
+            } catch (NoSuchElementException e) {
+                System.out.printf("No quotes found containing the word %s\n", args[1]);
+            }
+
+            return;
+        }
+
+        if (args[0].equals("tag")) {
+            try{
+                System.out.println(
+                        qr.getQuotation(null, args[1], null).prettyPrint()
+                );
+            } catch (NoSuchElementException e) {
+                System.out.printf("No quotes found containing the tag %s\n", args[1]);
+            }
+            return;
+        }
+
+        if (args[0].equals("help")) {
+            System.out.println("Returns a random quote from our curated list of quotes.");
+            System.out.println("Arguments: author [author-name]");
+            System.out.println("Arguments: contains [word]");
+            System.out.println("Arguments: tag [tag]");
+            return;
+        }
+
+        System.out.printf("%s is not a valid argument. Type help to see arguments.", args[0]);
+
     }
 }
