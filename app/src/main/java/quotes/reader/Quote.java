@@ -26,8 +26,6 @@ public class Quote {
     }
 
     public String prettyPrint() {
-        return String.format("%s - %s", text, author);
-        //AnimalWriter.speechBubble(lines);
-        //return AnimalWriter.join(lines);
+        return String.format("%s -%s", text, author);
     }
 }

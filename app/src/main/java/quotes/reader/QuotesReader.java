@@ -36,9 +36,9 @@ public class QuotesReader {
             holder.add(q);
         }
 
-        if(holder.size() == 0) throw new NoSuchElementException("No quotes found");
+        if (holder.size() == 0) throw new NoSuchElementException("No quotes found");
 
-        int idx =  rand.nextInt(holder.size());
+        int idx = rand.nextInt(holder.size());
         return holder.get(idx);
     }
 
