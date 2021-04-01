@@ -1,64 +1,72 @@
 package quotes.reader;
 
-import java.util.ArrayList;
+import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 public class AnimalWriter {
-    static final int WIDTH = 45;
+    int width;
+    PrintStream out;
 
-    public static LinkedList<String> wrap(String text) {
-        String[] words = text.split(" ");
+    public AnimalWriter(PrintStream out) { this(out, 45); }
+
+    public AnimalWriter(PrintStream out, int width) {
+        this.out = out;
+        this.width = width;
+    }
+
+    public static void main(String[] args) {
+        AnimalWriter aw = new AnimalWriter(System.out, 10);
+        String s = "Lorem ipsum dolor sit amet";
+        aw.fishSay(s);
+    }
+
+    private String spaces(int n) {
+        if (n <= 0) return "";
+        char[] chars = new char[n];
+        Arrays.fill(chars, ' ');
+        return new String(chars);
+    }
+
+    private LinkedList<String> wrap(String text) {
         LinkedList<String> lines = new LinkedList<>();
-        int curLength = 0;
-        String curLine = "";
-        for( String word : words ) {
-            if (word.length() + curLength >= WIDTH) {
-                // Add the old line to the lines list
-                curLine += " ".repeat(WIDTH - curLine.length());
-                lines.add(curLine);
-                // Start a new line
-                curLine = "";
-                curLength = 0;
+        int start = 0; // Start is the first index of the next line
+        int cur = 0;
+        while(start + width < text.length()) {
+            int next = text.indexOf(" ", cur);
+            if (next == -1) next = text.length();
+            if (next - cur > width) {
+                cur = start + width;
+                lines.add(text.substring(start, cur));
+                start = cur;
+            } else {
+                if (next - start >= width) {
+                    lines.add(text.substring(start, cur) + spaces(width - cur + start));
+                    start = cur;
+                }
+                cur = next + 1;
             }
-            // Add the word to the current line
-            curLine += " " + word;
-            curLength += 1 + word.length();
-            curLine += " ".repeat(WIDTH - curLine.length());
         }
-        // Add the last line to the lines list
-        lines.add(curLine);
+        lines.add(text.substring(start) + spaces(width - text.length() + start));
         return lines;
     }
 
-    public static String join(List<String> lines) {
-        return String.join("\n", lines);
+    private void printSpeechBubble(Iterable<String> lines) {
+        String border = " " + "-".repeat(width + 2) + " ";
+        out.println(border);
+        for (String line : lines) out.printf("| %s |\n", line);
+        out.println(border);
     }
 
-    public static void speechBubble(LinkedList<String> lines) {
-        for (int i = 0; i < lines.size(); i++) {
-            String line = lines.get(i);
-            String newLine = (String) ("| " + line + " |");
-            lines.set(i, newLine);
-        }
-
-        String border = "  " + "-".repeat(WIDTH) + "  ";
-        lines.addFirst(border);
-        lines.addLast(border);
-    }
-
-    public static String fishSay(String text) {
+    public void fishSay(String text) {
         LinkedList<String> lines = wrap(text);
-        speechBubble(lines);
-        /*
-        String fish = "|\\   \\\\\\\\__     o\n" +
-                "| \\_/    o \\    o \n" +
-                "> _   (( <_  oo  \n" +
-                "| / \\__+___/      \n" +
-                "|/     |/";
-        lines.add(fish);
-
-         */
-        return join(lines);
+        printSpeechBubble(lines);
+        String fish =
+                "      |\\   \\\\\\\\__     o\n" +
+                "      | \\_/    o \\    o \n" +
+                "      > _   (( <_  oo  \n" +
+                "      | / \\__+___/      \n" +
+                "      |/     |/";
+        out.println(fish);
     }
 }

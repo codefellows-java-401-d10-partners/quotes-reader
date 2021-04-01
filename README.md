@@ -2,7 +2,8 @@
 
 A Java command line application that parses a JSON file with quotes to read a random quote.
 
-## Contributors Edward Hou/Cristian Robles
+## Contributors
+Edward Hou/Cristian Robles
 
 # Usage
 ```shell
