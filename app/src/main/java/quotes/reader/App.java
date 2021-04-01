@@ -4,11 +4,34 @@
 package quotes.reader;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.NoSuchElementException;
 
 public class App {
     public static void main(String[] args) throws FileNotFoundException {
         //Make a new instance of  the QuoteReader class
+
+
+        String urlString = "https://favqs.com/api/";
+        String apiKey="c4b331ae5528ceed43adc50fa7788f25";
+        URL favQuote;
+        try {
+            favQuote= new URL(urlString);
+            HttpURLConnection quoteConnection = (HttpURLConnection) favQuote.openConnection();
+            quoteConnection.
+
+        } catch (MalformedURLException e) {
+            System.out.println("Url does not work");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("Connection did not work?");
+            e.printStackTrace();
+        }
+
+
         QuotesReader qr;
         //Insert the path into
         try {
@@ -23,7 +46,7 @@ public class App {
             System.out.println(qr.getQuotation().prettyPrint());
             return;
         }
-
+        //if not it will trigger a certain if statement and excecute proper code
         if (args[0].equals("author")) {
             try {
                 System.out.println(
@@ -57,7 +80,7 @@ public class App {
             }
             return;
         }
-
+        //incase someone types help
         if (args[0].equals("help")) {
             System.out.println("Returns a random quote from our curated list of quotes.");
             System.out.println("Arguments: author [author-name]");
