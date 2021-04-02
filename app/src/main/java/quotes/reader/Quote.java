@@ -14,7 +14,7 @@ public class Quote {
         this.text = text;
         this.likes = likes;
         this.tags = tags;
-        this.id id;
+        this.id = id;
     }
 
     @Override

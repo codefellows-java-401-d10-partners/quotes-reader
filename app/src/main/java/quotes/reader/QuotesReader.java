@@ -6,21 +6,36 @@ import java.io.*;
 import java.util.*;
 
 public class QuotesReader {
+    String localCachePath;
     BufferedReader br;
     Gson gson = new Gson();
     Random rand = new Random();
     List<Quote> quotes;
     QuotesAPI api = new QuotesAPI();
-    Map<Integer, Quote> localCache = new HashMap<>();
+    Map<Integer, Quote> quotesMap = new HashMap<>();
     Map<String, ArrayList<Quote>> authors = new HashMap<>();
 
     /**
      * @param localCachePath
      */
-    public QuotesReader(String localCachePath) throws FileNotFoundException {
-        br = new BufferedReader(new FileReader(localCachePath));
-        Quote[] quotesArray = gson.fromJson(br, Quote[].class);
-        quotes = Arrays.asList(quotesArray);
+    public QuotesReader(String localCachePath) throws IOException {
+        this.localCachePath = localCachePath;
+        File localCacheFile = new File(localCachePath);
+        if (localCacheFile.exists()) {
+            br = new BufferedReader(new FileReader(localCachePath));
+            // load file into quotesArray
+            Quote[] quotesArray = gson.fromJson(br, Quote[].class);
+            // insert quotes into our hashArray
+            for ( Quote q : quotesArray ) {
+                quotesMap.put(q.id, q);
+            }
+            br.close();
+        } else {
+            // Create a file initialized as an empty JSON array
+            BufferedWriter bw = new BufferedWriter(new FileWriter(localCacheFile));
+            bw.append("[\n]");
+            bw.close();
+        }
     }
 
     public Quote getQuotation(String author, String tag, String word) throws NoSuchElementException {
@@ -51,5 +66,28 @@ public class QuotesReader {
     public void cacheLocal(Quote quote) {
         // Check to see if our quote exists in our localCache list
         // If it doesn't then save the quote to our localCachePath file
+    }
+
+    public void cacheLocal(ArrayList<Quote> quotes) {
+        // Check to see if our quote exists in our localCache list
+        // If it doesn't then save the quote to our localCachePath file
+        //addToJSONArray(String text);
+
+
+    }
+
+    private void addToJSONArray(String text) {
+        try (RandomAccessFile f = new RandomAccessFile(localCachePath, "rw")) {
+            f.setLength(f.length() - 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (PrintWriter writer = new PrintWriter(new FileOutputStream(localCachePath, true))) {
+            writer.append(text);
+            writer.append("]");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -3,92 +3,90 @@
  */
 package quotes.reader;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class App {
     public static void main(String[] args) {
 
-        String urlFavQ = "https://favqs.com/api/quotes/";
-        String apiKey = System.getenv("API_KEY");
-        String authenticationHeader = String.format("Token token=\"%s\"", apiKey);
-        System.out.println(authenticationHeader);
-
-        try {
-            URL quoteUrl = new URL(urlFavQ);
-            HttpURLConnection quoteConnection = (HttpURLConnection) quoteUrl.openConnection();
-            quoteConnection.setRequestProperty("Content-Type","application/json");
-            quoteConnection.setRequestProperty("Authorization",authenticationHeader);
-            quoteConnection.setRequestMethod("GET");
-//            System.out.println(quoteConnection.getResponseCode());
-            InputStreamReader inStreamReader = new InputStreamReader(quoteConnection.getInputStream());
-            BufferedReader buffy = new BufferedReader(inStreamReader);
-
-            System.out.println(buffy.readLine());
-        } catch (MalformedURLException e) {
-            System.out.println("Something is wrong with the URL");
-            e.printStackTrace();
-            return;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-
+//        String urlFavQ = "https://favqs.com/api/quotes/";
+//        String apiKey = System.getenv("API_KEY");
+//        String authenticationHeader = String.format("Token token=\"%s\"", apiKey);
+//        System.out.println(authenticationHeader);
+//
+//        try {
+//            URL quoteUrl = new URL(urlFavQ);
+//            HttpURLConnection quoteConnection = (HttpURLConnection) quoteUrl.openConnection();
+//            quoteConnection.setRequestProperty("Content-Type","application/json");
+//            quoteConnection.setRequestProperty("Authorization",authenticationHeader);
+//            quoteConnection.setRequestMethod("GET");
+////            System.out.println(quoteConnection.getResponseCode());
+//            InputStreamReader inStreamReader = new InputStreamReader(quoteConnection.getInputStream());
+//            BufferedReader buffy = new BufferedReader(inStreamReader);
+//
+//            System.out.println(buffy.readLine());
+//        } catch (MalformedURLException e) {
+//            System.out.println("Something is wrong with the URL");
+//            e.printStackTrace();
+//            return;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return;
+//        }
+//
         QuotesReader qr;
         String quote = null;
-
 
         try {
             //Make a new instance of the QuoteReader class
             qr = new QuotesReader("src/main/resources/quotescache.json");
-        } catch (FileNotFoundException e) {
-            System.out.println("Quotes input file not found.");
-            return;
+            qr.cacheLocal(new ArrayList<>());
+        } catch (IOException e) {
+            System.out.println("Quotes input file could not be written to.");
+            e.printStackTrace();
         }
 
-        // check if args are 0, if it is, will just run code to get a random quote
-        if (args.length == 0) {
-            quote = qr.getQuotation().prettyPrint();
-        } else if (args[0].equals("author")) {
-            try {
-                quote = qr.getQuotation(args[1], null, null).prettyPrint();
-            } catch (NoSuchElementException e) {
-                System.out.printf("No quotes found by author %s\n", args[0]);
-                return;
-            }
-        } else if (args[0].equals("contains")) {
-            try {
-                quote = qr.getQuotation(null, null, args[1]).prettyPrint();
-            } catch (NoSuchElementException e) {
-                System.out.printf("No quotes found containing the word %s\n", args[1]);
-                return;
-            }
-        } else if (args[0].equals("tag")) {
-            try {
-                quote = qr.getQuotation(null, args[1], null).prettyPrint();
-            } catch (NoSuchElementException e) {
-                System.out.printf("No quotes found containing the tag %s\n", args[1]);
-                return;
-            }
-        } else if (args[0].equals("help")) {
-            System.out.println("Returns a random quote from our curated list of quotes.");
-            System.out.println("Arguments: author [author-name]");
-            System.out.println("Arguments: contains [word]");
-            System.out.println("Arguments: tag [tag]");
-            return;
-        }
-
-        if (quote == null) System.out.printf("%s is not a valid argument. Type help to see arguments.", args[0]);
-        else {
-            AnimalWriter aw = new AnimalWriter(System.out, 50);
-            aw.fishSay(quote);
-        }
+//        // check if args are 0, if it is, will just run code to get a random quote
+//        if (args.length == 0) {
+//            quote = qr.getQuotation().prettyPrint();
+//        } else if (args[0].equals("author")) {
+//            try {
+//                quote = qr.getQuotation(args[1], null, null).prettyPrint();
+//            } catch (NoSuchElementException e) {
+//                System.out.printf("No quotes found by author %s\n", args[0]);
+//                return;
+//            }
+//        } else if (args[0].equals("contains")) {
+//            try {
+//                quote = qr.getQuotation(null, null, args[1]).prettyPrint();
+//            } catch (NoSuchElementException e) {
+//                System.out.printf("No quotes found containing the word %s\n", args[1]);
+//                return;
+//            }
+//        } else if (args[0].equals("tag")) {
+//            try {
+//                quote = qr.getQuotation(null, args[1], null).prettyPrint();
+//            } catch (NoSuchElementException e) {
+//                System.out.printf("No quotes found containing the tag %s\n", args[1]);
+//                return;
+//            }
+//        } else if (args[0].equals("help")) {
+//            System.out.println("Returns a random quote from our curated list of quotes.");
+//            System.out.println("Arguments: author [author-name]");
+//            System.out.println("Arguments: contains [word]");
+//            System.out.println("Arguments: tag [tag]");
+//            return;
+//        }
+//
+//        if (quote == null) System.out.printf("%s is not a valid argument. Type help to see arguments.", args[0]);
+//        else {
+//            AnimalWriter aw = new AnimalWriter(System.out, 50);
+//            aw.fishSay(quote);
+//        }
     }
 }

@@ -7,27 +7,28 @@ public class QuotesAPI {
     static final String URL_ROOT = "https://favqs.com/api/";
 
     public QuotesAPI () {
-        // Load the local cache into the quotes ArrayList
-
     }
 
-    public ArrayList<Quote> getRandomQuotation() {
-
-    }
-
-    public ArrayList<Quote> getQuotationsByAuthor(String author) {
-
-    }
-
-    public ArrayList<Quote> getQuotationsByTag(String tag) {
-
-    }
-
-    public ArrayList<Quote> getQuotationsByWord(String word) {
-
-    }
-
-    private Object makeQuery(String URLString) {
-
-    }
+    // Query the quote of the day and return an array that contains just
+//    public ArrayList<Quote> getRandomQuotation() {
+//
+//    }
+//
+    // Query the API to get an array list of quotations an author
+//    public ArrayList<Quote> getQuotationsByAuthor(String author) {
+//
+//    }
+//
+    // Query the API to get an array list of quotations with a certain tag
+//    public ArrayList<Quote> getQuotationsByTag(String tag) {
+//
+//    }
+//
+//    public ArrayList<Quote> getQuotationsByWord(String word) {
+//
+//    }
+//
+//    private Object makeQuery(String URLString) {
+//
+//    }
 }
