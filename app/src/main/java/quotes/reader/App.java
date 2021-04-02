@@ -41,7 +41,9 @@ public class App {
 //
         QuotesReader qr;
         String quote = null;
-        QuotesAPI.getRandomQuotation();
+        QuotesAPI.getQuotationsByAuthor("Mark Twain");
+//        QuotesAPI.getRandomQuotation();
+
         try {
             //Make a new instance of the QuoteReader class
             qr = new QuotesReader("src/main/resources/quotescache.json");

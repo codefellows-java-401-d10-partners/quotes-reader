@@ -38,25 +38,25 @@ public class QuotesReader {
         }
     }
 
-    public Quote getQuotation(String author, String tag, String word) throws NoSuchElementException {
-        ArrayList<Quote> holder = new ArrayList<>();
-
-        for(Quote q : quotes){
-            if (author != null && !q.author.equals(author))
-                continue;
-            if (word != null
-                    && !q.text.toLowerCase(Locale.ROOT).contains(word.toLowerCase(Locale.ROOT)))
-                continue;
-            if (tag != null && !q.tags.contains(tag))
-                continue;
-            holder.add(q);
-        }
-
-        if (holder.size() == 0) throw new NoSuchElementException("No quotes found");
-
-        int idx = rand.nextInt(holder.size());
-        return holder.get(idx);
-    }
+//    public Quote getQuotation(String author, String tag, String word) throws NoSuchElementException {
+//        ArrayList<Quote> holder = new ArrayList<>();
+//
+//        for(Quote q : quotes){
+//            if (author != null && !q.author.equals(author))
+//                continue;
+//            if (word != null
+//                    && !q.text.toLowerCase(Locale.ROOT).contains(word.toLowerCase(Locale.ROOT)))
+//                continue;
+//            if (tag != null && !q.tags.contains(tag))
+//                continue;
+//            holder.add(q);
+//        }
+//
+//        if (holder.size() == 0) throw new NoSuchElementException("No quotes found");
+//
+//        int idx = rand.nextInt(holder.size());
+//        return holder.get(idx);
+//    }
 
     public Quote getQuotation() {
         int index = rand.nextInt(quotes.size());

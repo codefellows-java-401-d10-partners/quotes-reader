@@ -19,13 +19,13 @@ public class Quote {
     public String toString() {
         return "Quote{" +
                 "author='" + author + '\'' +
-                ", text='" + text + '\'' +
+                ", body='" + body + '\'' +
                 ", likes='" + likes + '\'' +
                 ", tags=" + tags +
                 '}';
     }
 
     public String prettyPrint() {
-        return String.format("%s -%s", text, author);
+        return String.format("%s -%s", body, author);
     }
 }
