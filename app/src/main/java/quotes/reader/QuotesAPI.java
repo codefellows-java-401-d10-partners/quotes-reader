@@ -31,31 +31,34 @@ public class QuotesAPI {
             randomConnection.setRequestProperty("Content-Type","application/json");
             randomConnection.setRequestMethod("GET");
             InputStreamReader quoteStream = new InputStreamReader(randomConnection.getInputStream());
-
             BufferedReader readQuotes = new BufferedReader(quoteStream);
-
             String holderString = readQuotes.readLine();
             System.out.println(holderString);
-
-
-            System.out.println(jsonInfo);
+            //we HATE api's that are weirdly formatted
+            QuoteAPIResponse curatedHolder = gson.fromJson(holderString,QuoteAPIResponse.class);
+            ArrayList<Quote> quoteArray= new ArrayList<>();
+            quoteArray.add(curatedHolder.quote);
+            return quoteArray;
 
         } catch (MalformedURLException e) {
+            System.out.println("Url is not right.");
             e.printStackTrace();
             return null;
         } catch (IOException e) {
+            System.out.println("Server dead or bad request");
             e.printStackTrace();
             return null;
         }
 
-        return null;
+
     }
 
-    // Query the API to get an array list of quotations an author
-//    public ArrayList<Quote> getQuotationsByAuthor(String author) {
-//
-//    }
-//
+//     Query the API to get an array list of quotations an author
+    public ArrayList<Quote> getQuotationsByAuthor(String author) {
+        URL authorURL = new URL(URL_ROOT);
+
+    }
+
     // Query the API to get an array list of quotations with a certain tag
 //    public ArrayList<Quote> getQuotationsByTag(String tag) {
 //
