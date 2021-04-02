@@ -3,14 +3,13 @@ package quotes.reader;
 import com.google.gson.Gson;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class QuotesCache {
     String localCachePath;
     Map<Integer, Quote> quotesMap = new HashMap<>();
+    List<Integer> quotesIds = new ArrayList<>();
+    Random rand = new Random();
     Gson gson = new Gson();
 
     public QuotesCache(String localCachePath) throws IOException {
@@ -23,8 +22,8 @@ public class QuotesCache {
             Quote[] quotesArray = gson.fromJson(br, Quote[].class);
             // insert quotes into our hashArray
             for (Quote q : quotesArray) {
-                System.out.println("Adding quote to quotes map");
                 quotesMap.put(q.id, q);
+                quotesIds.add(q.id);
             }
         } else {
             System.out.println("File does not exist.");
@@ -49,6 +48,7 @@ public class QuotesCache {
                 // If it doesn't then save the quote to our localCachePath file
                 if (!quotesMap.containsKey(q.id)) {
                     quotesMap.put(q.id, q);
+                    quotesIds.add(q.id);
                     if (hasEntries) writer.append(",\n");
                     else writer.append("\n");
                     gson.toJson(q, Quote.class, writer);
@@ -58,18 +58,40 @@ public class QuotesCache {
         }
     }
 
-    public static ArrayList<Quote> getRandomQuotation() {
+    public ArrayList<Quote> getRandomQuotation() {
+        int idx = rand.nextInt(quotesIds.size());
+        ArrayList<Quote> result = new ArrayList<>();
+        int randomId = quotesIds.get(idx);
+        result.add(quotesMap.get(randomId));
+        return result;
     }
 
     public ArrayList<Quote> getQuotationsByAuthor(String author) {
-
+        ArrayList<Quote> result = new ArrayList<>();
+        for (Map.Entry<Integer, Quote> e : quotesMap.entrySet()) {
+            Quote q = e.getValue();
+            if (q.author.equals(author)) result.add(q);
+        }
+        return result;
     }
 
     public ArrayList<Quote> getQuotationsByTag(String tag) {
-
+        ArrayList<Quote> result = new ArrayList<>();
+        for (Map.Entry<Integer, Quote> e : quotesMap.entrySet()) {
+            Quote q = e.getValue();
+            if (q.tags.contains(tag.toLowerCase(Locale.ROOT))) result.add(q);
+        }
+        return result;
     }
 
     public ArrayList<Quote> getQuotationsByWord(String word) {
-
+        ArrayList<Quote> result = new ArrayList<>();
+        String lowercaseWord = word.toLowerCase(Locale.ROOT);
+        String capitalized = word.substring(0, 1).toUpperCase() + word.substring(1);
+        for (Map.Entry<Integer, Quote> e : quotesMap.entrySet()) {
+            Quote q = e.getValue();
+            if (q.body.contains(word.toLowerCase(Locale.ROOT))) result.add(q);
+        }
+        return result;
     }
 }
