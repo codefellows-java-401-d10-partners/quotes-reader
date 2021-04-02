@@ -9,6 +9,7 @@ public class Quote {
     public int id;
     public ArrayList<String> tags;
 
+
     public Quote(String author, String text, String likes, ArrayList<String> tags, int id) {
         this.author = author;
         this.text = text;
