@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +60,7 @@ public class QuotesAPI {
 //     Query the API to get an array list of quotations an author
     public static ArrayList<Quote> getQuotationsByAuthor(String author) {
 //        author.replace(" " ,"+");
-        String encodedAuthor= URLEncoder.encode(author,StandardCharsets.UTF_8);
+        String encodedAuthor= URLEncoder.encode(author, StandardCharsets.UTF_8);
 
         try {
             URL authorURL = new URL(URL_ROOT+"quotes/?filter="+encodedAuthor+"&type=author");
