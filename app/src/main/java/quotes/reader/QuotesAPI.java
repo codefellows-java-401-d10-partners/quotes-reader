@@ -38,7 +38,7 @@ public class QuotesAPI {
             System.out.println(holderString);
 
 
-            System.out.println(jsonInfo);
+            //System.out.println(jsonInfo);
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
