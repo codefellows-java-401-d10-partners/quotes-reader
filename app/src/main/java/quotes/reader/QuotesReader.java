@@ -1,7 +1,6 @@
 package quotes.reader;
 
 import com.google.gson.Gson;
-import org.checkerframework.checker.units.qual.A;
 
 import java.io.*;
 import java.util.*;
@@ -11,13 +10,15 @@ public class QuotesReader {
     Gson gson = new Gson();
     Random rand = new Random();
     List<Quote> quotes;
+    QuotesAPI api = new QuotesAPI();
+    Map<Integer, Quote> localCache = new HashMap<>();
     Map<String, ArrayList<Quote>> authors = new HashMap<>();
 
     /**
-     * @param inputFilePath
+     * @param localCachePath
      */
-    public QuotesReader(String inputFilePath) throws FileNotFoundException {
-        br = new BufferedReader(new FileReader(inputFilePath));
+    public QuotesReader(String localCachePath) throws FileNotFoundException {
+        br = new BufferedReader(new FileReader(localCachePath));
         Quote[] quotesArray = gson.fromJson(br, Quote[].class);
         quotes = Arrays.asList(quotesArray);
     }
@@ -45,5 +46,10 @@ public class QuotesReader {
     public Quote getQuotation() {
         int index = rand.nextInt(quotes.size());
         return quotes.get(index);
+    }
+
+    public void cacheLocal(Quote quote) {
+        // Check to see if our quote exists in our localCache list
+        // If it doesn't then save the quote to our localCachePath file
     }
 }

@@ -21,7 +21,6 @@ public class App {
         String authenticationHeader = String.format("Token token=\"%s\"", apiKey);
         System.out.println(authenticationHeader);
 
-
         try {
             URL quoteUrl = new URL(urlFavQ);
             HttpURLConnection quoteConnection = (HttpURLConnection) quoteUrl.openConnection();
@@ -48,7 +47,7 @@ public class App {
 
         try {
             //Make a new instance of the QuoteReader class
-            qr = new QuotesReader("src/main/resources/recentquotes.json");
+            qr = new QuotesReader("src/main/resources/quotescache.json");
         } catch (FileNotFoundException e) {
             System.out.println("Quotes input file not found.");
             return;
