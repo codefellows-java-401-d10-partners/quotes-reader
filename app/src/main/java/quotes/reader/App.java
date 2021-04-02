@@ -3,14 +3,49 @@
  */
 package quotes.reader;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.SQLOutput;
 import java.util.NoSuchElementException;
 
 public class App {
     public static void main(String[] args) {
+
+        String urlFavQ = "https://favqs.com/api/quotes/";
+        String apiKey = System.getenv("API_KEY");
+        String authenticationHeader = String.format("Token token=\"%s\"", apiKey);
+        System.out.println(authenticationHeader);
+
+
+        try {
+            URL quoteUrl = new URL(urlFavQ);
+            HttpURLConnection quoteConnection = (HttpURLConnection) quoteUrl.openConnection();
+            quoteConnection.setRequestProperty("Content-Type","application/json");
+            quoteConnection.setRequestProperty("Authorization",authenticationHeader);
+            quoteConnection.setRequestMethod("GET");
+//            System.out.println(quoteConnection.getResponseCode());
+            InputStreamReader inStreamReader = new InputStreamReader(quoteConnection.getInputStream());
+            BufferedReader buffy = new BufferedReader(inStreamReader);
+
+            System.out.println(buffy.readLine());
+        } catch (MalformedURLException e) {
+            System.out.println("Something is wrong with the URL");
+            e.printStackTrace();
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
         QuotesReader qr;
         String quote = null;
+
+
         try {
             //Make a new instance of the QuoteReader class
             qr = new QuotesReader("src/main/resources/recentquotes.json");
