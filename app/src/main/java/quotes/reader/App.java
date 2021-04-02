@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 public class App {
     public static void main(String[] args) {
 
-        String urlFavQ = "https://favqs.com/api/qotd";
+        String urlFavQ = "https://favqs.com/api/quotes/";
         String apiKey = System.getenv("API_KEY");
         String authenticationHeader = String.format("Token token=\"%s\"", apiKey);
         System.out.println(authenticationHeader);
@@ -26,14 +26,13 @@ public class App {
             URL quoteUrl = new URL(urlFavQ);
             HttpURLConnection quoteConnection = (HttpURLConnection) quoteUrl.openConnection();
             quoteConnection.setRequestProperty("Content-Type","application/json");
-
-//            quoteConnection.setRequestProperty("Authorization",authenticationHeader);
+            quoteConnection.setRequestProperty("Authorization",authenticationHeader);
             quoteConnection.setRequestMethod("GET");
-            System.out.println(quoteConnection.getResponseCode());
-//            InputStreamReader inStreamReader = new InputStreamReader(quoteConnection.getInputStream());
-//            BufferedReader buffy = new BufferedReader(inStreamReader);
-//
-//            System.out.println(buffy.readLine());
+//            System.out.println(quoteConnection.getResponseCode());
+            InputStreamReader inStreamReader = new InputStreamReader(quoteConnection.getInputStream());
+            BufferedReader buffy = new BufferedReader(inStreamReader);
+
+            System.out.println(buffy.readLine());
         } catch (MalformedURLException e) {
             System.out.println("Something is wrong with the URL");
             e.printStackTrace();
