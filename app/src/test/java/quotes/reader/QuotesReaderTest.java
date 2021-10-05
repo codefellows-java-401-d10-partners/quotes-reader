@@ -59,4 +59,8 @@ public class QuotesReaderTest {
         assertThrows("throws when no quote contains word",
                 NoSuchElementException.class, () -> qr.getQuotation(null, null, "taxes"));
     }
+
+    @Test void testIfFileExist(){
+
+    }
 }
